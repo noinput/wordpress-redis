@@ -1,3 +1,8 @@
+global:
+  env:
+    - SETTING_CF: 0
+    - SETTING_DEBUG: 1
+    - SETTING_POWERED: 1
 web1:
   name: wp-web
   shared_writable_dirs:
