@@ -102,7 +102,24 @@ if ($redis->hexists($dkey, $ukey) && !$loggedin && !$submit && !strpos($url, '/f
 } else {
 
     // turn on output buffering
-    ob_start();
+function sanitize_output($buffer)
+{
+    $search = array(
+        '/\>[^\S ]+/s', //strip whitespaces after tags, except space
+        '/[^\S ]+\</s', //strip whitespaces before tags, except space
+        '/(\s)+/s'  // shorten multiple whitespace sequences
+        );
+    $replace = array(
+        '>',
+        '<',
+        '\\1'
+        );
+    $buffer = preg_replace($search, $replace, $buffer);
+
+    return $buffer;
+}
+
+ob_start("sanitize_output");
 
     require('./wordpress/wp-blog-header.php');
 
